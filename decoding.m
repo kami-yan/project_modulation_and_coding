@@ -1,4 +1,4 @@
-function [bits_stream] = decoding(stream_encoded,P,H)
+function [bits_stream] = decoding(stream_encoded,H,k_limit)
 
 
 [k,n] = size(H);
@@ -25,7 +25,7 @@ for m = 1:length(stream_encoded)/n
             for w = 1:n
                 if H(v,w) ~=0 && c_bis(2,w) == 0 % To be sure that we went for the first time trhough c(w)
                     c_bis(2,w) = 1; % we have compute c(w) for the first time
-                    c_bis(1,w) = c * H(v,:)' - c(w); % cancel the participation to himself
+                    c_bis(1,w) = c * H(v,:)' - c(w); % cancel the participation to himself (due to identity matrix)
                     c_bis(1,w) = mod(c_bis(1,w),2);           
                 end
             end
@@ -61,12 +61,12 @@ for m = 1:length(stream_encoded)/n
         s = u * H';
         s = mod(s,2);
 
-        if nnz(s) == 0 || loop > 10
+        if nnz(s) == 0 || loop >= k_limit
             while_cond = 0;
             c = u; % the information decided become the new information received for the next iteration
         end
 
-
+      
     end % end of while loop
 
 end % end loop for m = 1:length(stream_encoded) - n
