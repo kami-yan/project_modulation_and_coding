@@ -1,4 +1,4 @@
-K_H = 2^6;
+K_H = 2^8;
 N_H = K_H*2;
 
 h = waitbar(0, 'Starting...', 'Name', 'Loading Progress');
@@ -116,9 +116,9 @@ for k = 1:nIterations
     N0_uncoded = Eb_uncoded / (10^(nb_point_BER(k)/10));
 
     Y = sqrt(N0/2 * 50E6) .* (randn(1,length(s)) + 1i * randn(1,length(s)));  % Creating white gaussian noise
-    Y_uncoded = sqrt(N0_uncoded/2 * 50E6) .* (randn(1,length(s)) + 1i * randn(1,length(s)));  % Creating white gaussian noise
+    Y_uncoded = sqrt(N0_uncoded/2 * 50E6) .* (randn(1,length(s_uncoded)) + 1i * randn(1,length(s_uncoded)));  % Creating white gaussian noise
     t = s + Y; % Signal with added noise
-    t_uncoded = s + Y_uncoded; % Signal with added noise
+    t_uncoded = s_uncoded + Y_uncoded; % Signal with added noise
     
     progress = k / nIterations;
     waitbar(progress, h, sprintf('Progress: %d%%', round(progress * 100)));
@@ -171,13 +171,13 @@ for k = 1:nIterations
     demap = demapping(r,bits_p_sym,'qam');
 
 
-%_______________________decoding_____________________________________________________
+%_______________________correction_____________________________________________________
 
 
     [bits_stream_1it] = decoding(demap,H,1);
     [bits_stream_5it] = decoding(demap,H,5);
     [bits_stream_10it] = decoding(demap,H,10);
-    [bits_stream_20it] = decoding(demap,H,100);
+    [bits_stream_20it] = decoding(demap,H,20);
     % 
     % infob = [];
     % 
@@ -190,7 +190,7 @@ for k = 1:nIterations
     
     
     % We count the number of error
-    error_vct_uncoded = vect - demap_uncoded;
+    error_vct_uncoded = vect' - demap_uncoded';
     error_vct_1it = final_vect' - bits_stream_1it;
     error_vct_5it = final_vect' - bits_stream_5it;
     error_vct_10it = final_vect' - bits_stream_10it;
@@ -198,13 +198,20 @@ for k = 1:nIterations
     
 
     nb_error = zeros(1,5);
-    error_vct = [error_vct_uncoded';error_vct_1it;error_vct_5it;error_vct_10it;error_vct_20it];
-    for i = 1:5
+    error_vct = [error_vct_1it;error_vct_5it;error_vct_10it;error_vct_20it];
+    for i = 1:4
     for l = error_vct(i,:)
         if l ~= 0
-            nb_error(i) = nb_error(i) + 1;
+            nb_error(i+1) = nb_error(i+1) + 1;
         end
     end
+    end
+
+    for l = error_vct_uncoded
+        if l ~= 0
+           
+            nb_error(1) = nb_error(1) + 1;
+        end
     end
 
     rate_error_uncoded = [rate_error_uncoded,nb_error(1)/length(error_vct_uncoded)];
@@ -234,4 +241,4 @@ loglog(rate_error_20it)
 grid on 
 legend('uncoded','1it','5it','10it','20it')
 
-
+close(h);
