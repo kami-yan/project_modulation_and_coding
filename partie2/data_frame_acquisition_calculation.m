@@ -64,6 +64,8 @@ plot(nb_point_BER_log,rate_N40_K8)
 hold off
 grid on
 legend('N=10 K=8','N=20 K=8','N=40 K=8')
+xlabel('Eb/N0')
+ylabel('time error std')
 
 nexttile
 plot(nb_point_BER_log,rate_N20_K1)
@@ -74,6 +76,8 @@ plot(nb_point_BER_log,rate_N20_K16)
 hold off
 grid on
 legend('N=20 K=1','N=20 K=8','N=20 K=16')
+xlabel('Eb/N0')
+ylabel('time error std')
 
 nexttile
 plot(nb_point_BER_log,rate_cfo_ToA)
@@ -82,6 +86,8 @@ plot(nb_point_BER_log,rate_N40_K8)
 hold off
 grid on
 legend('CFO ToA','without CFO')
+xlabel('Eb/N0')
+ylabel('time error std')
 
 nexttile
 plot(nb_point_BER_log,rate_N10_K8_ppm)
@@ -92,6 +98,8 @@ plot(nb_point_BER_log,rate_N40_K8_ppm)
 hold off
 grid on
 legend('CFO N=10 K=8 ppm','CFO N=20 K=8 ppm','CFO N=40 K=8 ppm')
+xlabel('Eb/N0')
+ylabel('time error std')
 
 nexttile
 plot(nb_point_BER_log,rate_N20_K1_ppm)
@@ -102,16 +110,20 @@ plot(nb_point_BER_log,rate_N20_K16_ppm)
 hold off
 grid on
 legend('CFO N=20 K=1 ppm','CFO N=20 K=8 ppm','CFO N=20 K=16 ppm')
-
+xlabel('Eb/N0')
+ylabel('time error std')
 
 nexttile
 plot(nb_point_BER_log,rate_cfo_ppm)
 hold on
 plot(nb_point_BER_log,rate_N40_K8_ppm)
+xlabel('Eb/N0')
+ylabel('time error std')
 
 hold off
 grid on
 legend('with cfo ppm','without cfo ppm')
+
 
 
 
