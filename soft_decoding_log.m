@@ -44,7 +44,7 @@ for m = 1:length(stream_encoded)/n
     
         
 
-        y = L_q;
+        y = -L_q;
         for w = 1:n
             for v = 1:k
                 y(w) = y(w) + r_bis(v,w); % L(Q)
@@ -71,8 +71,8 @@ for m = 1:length(stream_encoded)/n
             while_cond = 0;     
         end
 
-    L_q = y; % the information decided become the new information received for the next iteration
-      
+    L_q = -y; % the information decided become the new information received for the next iteration
+    % L_q = u; % ?
     end % end of while loop
 
 
